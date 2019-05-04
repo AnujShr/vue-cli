@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-bind:key="thread.key" v-for="thread in threads" class="col-large push-top">
+        <div v-bind:key="thread.key" class="col-large push-top">
 
             <h1>{{thread.title}}</h1>
             <div class="post-list">
@@ -36,12 +36,17 @@
 
 <script>
 import sourceData from '@/data'
-
 export default {
-  name: 'HelloWorld',
+  name: 'ThreadShow',
+  props: {
+    id: {
+      required: true,
+      type: String
+    }
+  },
   data () {
     return {
-      threads: sourceData.threads,
+      thread: sourceData.threads[this.id],
       posts: sourceData.posts,
       users: sourceData.users,
       forums: sourceData.forums,
@@ -51,4 +56,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
