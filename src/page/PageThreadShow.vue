@@ -13,7 +13,7 @@
 
 <script>
 import sourceData from '@/data'
-import PostList from '@/page/PostList'
+import PostList from '@/components/PostList'
 import PostEditor from '@/components/PostEditor'
 
 export default {
