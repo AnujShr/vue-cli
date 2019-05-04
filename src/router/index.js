@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import PageHome from '@/components/page/PageHome'
-import ThreadShow from '@/components/page/PageThreadShow'
-import PageNotFound from '@/components/page/PageNotFound'
+import PageHome from '@/page/PageHome'
+import ThreadShow from '@/page/PageThreadShow'
+import PageNotFound from '@/page/PageNotFound'
 
 Vue.use(Router)
 

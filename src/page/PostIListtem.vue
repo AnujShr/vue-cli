@@ -18,8 +18,9 @@
             </div>
         </div>
 
-        <div class="post-date text-faded">
-            {{post.publishedAt}}
+        <div class="post-date text-faded"
+        :title="post.publishedAt | humanFriendlyDate">
+            {{post.publishedAt | diffForHuman}}
         </div>
 
     </div>
@@ -28,6 +29,7 @@
 
 <script>
 import sourceData from '@/data'
+import moment from 'moment'
 
 export default {
   name: 'PostListItem',
@@ -44,6 +46,15 @@ export default {
     userPostsCount () {
       return Object.keys(this.user.posts).length
     }
+  },
+  filters: {
+    humanFriendlyDate (date) {
+      return moment.unix(date).format('MMMM Do YYYY, h:mm:ss a')
+    },
+    diffForHuman (date) {
+      return moment.unix(date).fromNow()
+    }
+
   }
 }
 </script>

@@ -13,7 +13,7 @@
 
 <script>
 import sourceData from '@/data'
-import PostList from '@/components/page/PostList'
+import PostList from '@/page/PostList'
 import PostEditor from '@/components/PostEditor'
 
 export default {
@@ -40,9 +40,8 @@ export default {
     }
   },
   methods: {
-    addPost (eventData) {
-      const post = eventData.post
-      const postId = eventData.post['.key']
+    addPost ({ post }) {
+      const postId = post['.key']
       this.$set(sourceData.posts, postId, post)
       this.$set(this.thread.posts, postId, postId)
       this.$set(sourceData.users[post.userId].posts, postId, postId)
