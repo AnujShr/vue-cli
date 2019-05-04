@@ -5,7 +5,7 @@
                 <router-link :to="{name:'ThreadShow' , params:{id:thread['.key']}}">{{thread.title}}</router-link>
             </p>
             <p class="text-faded text-xsmall">
-                By <a href="#">{{users.name}}</a>, {{thread.publishedAt}}.
+                By <a href="#">{{users.name}}</a>, <app-date :timestamp="thread.publishedAt"></app-date>.
             </p>
         </div>
 

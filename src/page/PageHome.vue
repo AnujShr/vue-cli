@@ -1,8 +1,8 @@
 <template>
     <div class="col-full">
         <h1>Welcome to the Forum</h1>
-        <ThreadList
-                :threads="threads"
+        <category-list
+                :categories="categories"
         />
     </div>
 
@@ -10,20 +10,16 @@
 
 <script>
 import sourceData from '@/data'
-import ThreadList from '@/components/ThreadList'
+import CategoryList from '@/components/CategoryList'
 
 export default {
   name: 'PageHome',
   components: {
-    ThreadList
+    CategoryList
   },
   data () {
     return {
-      threads: Object.values(sourceData.threads),
-      posts: sourceData.posts,
-      users: sourceData.users,
-      forums: sourceData.forums,
-      categories: sourceData.categories
+      categories: Object.values(sourceData.categories)
     }
   }
 }
