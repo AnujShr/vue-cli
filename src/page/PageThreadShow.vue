@@ -3,6 +3,11 @@
         <div v-bind:key="thread.key" class="col-large push-top">
 
             <h1>{{thread.title}}</h1>
+            <router-link
+                    :to="{name:'ThreadEdit' , props:{id: this.id}}"
+                    class="btn-small btn-green"
+                    tag="button"
+            >Edit</router-link>
             <p>
                 By <a href="#" class="link-unstyled">Robin</a>,
                 <app-date :timestamp="thread.publishedAt"/>
@@ -39,7 +44,6 @@ export default {
         .filter(post => postIds.includes(post['.key']))
     },
     thread () {
-      console.log(this.id)
       return this.$store.state.threads[this.id]
     }
   }

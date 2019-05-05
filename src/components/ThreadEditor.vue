@@ -21,7 +21,7 @@
 
         <div class="btn-group">
             <button class="btn btn-ghost" @click.prevent="cancel">Cancel</button>
-            <button class="btn btn-blue" type="submit" name="Publish">Publish</button>
+            <button class="btn btn-blue" type="submit" name="Publish">{{isUpdate ? 'Update' : 'Publish'}}</button>
         </div>
     </form>
 
@@ -46,6 +46,11 @@ export default {
         title: this.title,
         text: this.text
       }
+    }
+  },
+  computed: {
+    isUpdate () {
+      return !!this.title
     }
   },
   methods: {
