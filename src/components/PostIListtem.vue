@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import {countObjProp} from '@/utils'
 
 export default {
   name: 'PostListItem',
@@ -41,7 +42,7 @@ export default {
       return this.$store.state.users[this.post.userId]
     },
     userPostsCount () {
-      return Object.keys(this.user.posts).length
+      return countObjProp(this.user.posts)
     }
   }
 }

@@ -60,6 +60,8 @@
 <script>
 import PostList from '@/components/PostList'
 import {mapGetters} from 'Vuex'
+import {countObjProp} from '@/utils'
+
 export default {
   name: 'Profile',
   components: { PostList },
@@ -68,14 +70,10 @@ export default {
       user: 'authUser'
     }),
     userPostCounts () {
-      return this.user.posts
-        ? Object.values(this.user.posts).length
-        : 0
+      return countObjProp(this.user.posts)
     },
     userThreadCounts () {
-      return this.user.threads
-        ? Object.values(this.user.threads).length
-        : 0
+      return countObjProp(this.user.threads)
     },
     userPosts () {
       return this.user.posts
