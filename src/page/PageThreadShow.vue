@@ -32,15 +32,15 @@ export default {
     PostList,
     PostEditor
   },
-  data () {
-    return {
-      thread: this.$store.state.threads[this.id]
-    }
-  },
   computed: {
     posts () {
       const postIds = Object.values(this.thread.posts)
-      return Object.values(this.$store.state.posts).filter(post => postIds.includes(post['.key']))
+      return Object.values(this.$store.state.posts)
+        .filter(post => postIds.includes(post['.key']))
+    },
+    thread () {
+      console.log(this.id)
+      return this.$store.state.threads[this.id]
     }
   }
 }

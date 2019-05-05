@@ -14,7 +14,9 @@
 
         <div class="post-content">
             <div>
-                {{post.text}}
+                <p>
+                    {{post.text}}
+                </p>
             </div>
         </div>
 

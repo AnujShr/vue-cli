@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     repliesCount () {
-      return countObjProp(this.thread.posts).length - 1
+      return countObjProp(this.thread.posts) - 1
     },
     users () {
       return this.$store.state.users[this.thread.userId]

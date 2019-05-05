@@ -34,9 +34,7 @@ export default {
     save () {
       const post = {
         text: this.postText,
-        publishedAt: Math.floor(Date.now() / 1000),
-        threadId: this.threadId,
-        userId: 'ALXhxjwgY9PinwNGHpfai6OWyDu2'
+        threadId: this.threadId
       }
       this.postText = ''
       this.$store.dispatch('createPost', post)
