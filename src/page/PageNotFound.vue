@@ -8,7 +8,7 @@
                 unavailable</p>
 
             <span class="link_text">
-            <router-link :to="{name:'PageHome'}">Back to  homepage</router-link>
+            <router-link :to="{name:'Home'}">Back to  homepage</router-link>
         </span>
         </div>
     </div>
