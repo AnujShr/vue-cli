@@ -6,7 +6,6 @@
                 :key="forum['.key']"
         />
     </div>
-
 </template>
 
 <script>
