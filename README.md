@@ -1,6 +1,6 @@
 # crazy
 
-> A crazy blog
+> A crazy Forum using Vue cli
 
 ## Build Setup
 
