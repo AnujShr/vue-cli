@@ -8,35 +8,52 @@
                 <img class="avatar-large" :src="user.avatar" alt="">
             </a>
 
-            <p class="desktop-only text-small">{{userPostsCount}} post</p>
+            <p class="desktop-only text-small">{{userPostsCount}} posts</p>
 
         </div>
 
         <div class="post-content">
-            <div>
-                <p>
-                    {{post.text}}
-                </p>
+            <template v-if="!editing">
+                <div>
+                    <p>
+                        {{post.text}}
+                    </p>
+                </div>
+                <a @click.prevent="editing = true" href="#" style="margin-left: auto;" class="link-unstyled"
+                   title="Make a change"><i class="fa fa-pencil"></i></a>
+            </template>
+            <div v-else>
+                <post-editor
+                        @save="editing = false"
+                        @cancel="editing = false"
+                        :post="post"
+                />
             </div>
+
         </div>
 
         <div class="post-date text-faded">
             <app-date :timestamp="post.publishedAt"></app-date>
         </div>
-
     </div>
-
 </template>
 
 <script>
-import {countObjProp} from '@/utils'
+import { countObjProp } from '@/utils'
+import PostEditor from '@/components/PostEditor'
 
 export default {
   name: 'PostListItem',
+  components: { PostEditor },
   props: {
     post: {
       required: true,
       type: Object
+    }
+  },
+  data () {
+    return {
+      editing: false
     }
   },
   computed: {

@@ -4,17 +4,17 @@
                     <textarea
                             name=""
                             id=""
-                            cols="30"
+                            cols="100"
                             rows="10"
                             class="form-input"
-                            v-model="postText"
+                            v-model="text"
                     ></textarea>
         </div>
         <div class="form-actions">
-            <button class="btn-blue">Submit post</button>
+            <button v-if="isUpdate" class="btn-small btn-ghost" @click.prevent="cancel">Cancel</button>
+            <button class="btn-blue">{{isUpdate?'Update': 'Submit post'}}</button>
         </div>
     </form>
-
 </template>
 
 <script>
@@ -22,24 +22,50 @@ export default {
   name: 'PostEditor',
   props: {
     threadId: {
-      required: true
+      required: false
+    },
+    post: {
+      type: Object
     }
   },
   data () {
     return {
-      postText: ''
+      text: this.post ? this.post.text : ''
+    }
+  },
+  computed: {
+    isUpdate () {
+      return !!this.post
     }
   },
   methods: {
     save () {
+      this.persist()
+        .then(post => {
+          this.$emit('save', { post })
+        })
+    },
+    create () {
       const post = {
-        text: this.postText,
+        text: this.text,
         threadId: this.threadId
       }
-      this.postText = ''
-      this.$store.dispatch('createPost', post)
+      this.text = ''
+      return this.$store.dispatch('createPost', post)
+    },
+    update () {
+      const payload = {
+        id: this.post['.key'],
+        text: this.text
+      }
+      return this.$store.dispatch('updatePost', payload)
+    },
+    persist () {
+      return this.isUpdate ? this.update() : this.create()
+    },
+    cancel () {
+      this.$emit('cancel')
     }
-
   }
 }
 </script>
