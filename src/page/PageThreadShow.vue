@@ -9,7 +9,7 @@
                     tag="button"
             >Edit</router-link>
             <p>
-                By <a href="#" class="link-unstyled">Robin</a>,
+                By <a href="#" class="link-unstyled">{{user.name}}</a>,
                 <app-date :timestamp="thread.publishedAt"/>
                 <span style="float:right; margin-top: 2px;" class="hide-mobile text-faded text-small">{{repliesCount}} replies by {{contributorsCount}} contributors</span>
             </p>
@@ -47,6 +47,9 @@ export default {
         .map(postId => this.$store.state.posts[postId])
       const userIds = replies.map(post => post.userId)
       return userIds.filter((item, index) => userIds.indexOf(item) === index).length
+    },
+    user () {
+      return this.$store.state.users[this.thread.userId]
     },
     posts () {
       const postIds = Object.values(this.thread.posts)
