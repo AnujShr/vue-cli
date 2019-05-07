@@ -11,7 +11,7 @@
             <p>
                 By <a href="#" class="link-unstyled">Robin</a>,
                 <app-date :timestamp="thread.publishedAt"/>
-                <span style="float:right; margin-top: 2px;" class="hide-mobile text-faded text-small">3 replies by 3 contributors</span>
+                <span style="float:right; margin-top: 2px;" class="hide-mobile text-faded text-small">{{repliesCount}} replies by {{contributorsCount}} contributors</span>
             </p>
 
             <PostList :posts="posts"/>
@@ -38,6 +38,16 @@ export default {
     PostEditor
   },
   computed: {
+    repliesCount () {
+      return this.$store.getters.repliesCount(this.thread['.key'])
+    },
+    contributorsCount () {
+      const replies = Object.keys(this.thread.posts)
+        .filter(postId => postId !== this.thread.firstPostId)
+        .map(postId => this.$store.state.posts[postId])
+      const userIds = replies.map(post => post.userId)
+      return userIds.filter((item, index) => userIds.indexOf(item) === index).length
+    },
     posts () {
       const postIds = Object.values(this.thread.posts)
       return Object.values(this.$store.state.posts)

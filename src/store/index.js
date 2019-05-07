@@ -88,7 +88,8 @@ export default new Vuex.Store({
       return state.users[state.authId]
     },
     userThreadsCounts: state => id => countObjProp(state.users[id].threads),
-    userPostsCounts: state => id => countObjProp(state.users[id].posts)
+    userPostsCounts: state => id => countObjProp(state.users[id].posts),
+    repliesCount: state => id => countObjProp(state.threads[id].posts) - 1
   },
   mutations: {
     setThread (state, { thread, threadId }) {

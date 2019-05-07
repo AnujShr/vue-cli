@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import {countObjProp} from '@/utils'
 
 export default {
   name: 'ThreadListItem',
@@ -41,7 +40,7 @@ export default {
   },
   computed: {
     repliesCount () {
-      return countObjProp(this.thread.posts) - 1
+      return this.$store.getters.repliesCount(this.thread['.key'])
     },
     users () {
       return this.$store.state.users[this.thread.userId]
