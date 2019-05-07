@@ -54,14 +54,14 @@ export default {
     user: {
       required: true,
       type: Object
+    }
+  },
+  computed: {
+    userPostsCounts () {
+      return this.$store.getters.userPostsCounts(this.user['.key'])
     },
-    userPostsCounts: {
-      required: true,
-      type: Number
-    },
-    userThreadsCounts: {
-      required: true,
-      type: Number
+    userThreadsCounts () {
+      return this.$store.getters.userThreadsCounts(this.user['.key'])
     }
   }
 }
