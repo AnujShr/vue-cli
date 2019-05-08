@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'Vuex'
-import sourceData from '@/data'
 import { countObjProp } from '@/utils'
+import * as firebase from 'firebase'
 
 Vue.use(Vuex)
 const makeAppendToParentMutation = ({ parent, child }) =>
@@ -14,8 +14,21 @@ const makeAppendToParentMutation = ({ parent, child }) =>
   }
 export default new Vuex.Store({
   state: {
-    ...sourceData,
+    categories: {},
+    forums: {},
+    threads: {},
+    posts: {},
+    users: {},
     authId: 'VXjpr2WHa8Ux4Bnggym8QFLdv5C3'
+  },
+  getters: {
+    authUser (state) {
+      // return state.users[state.authId]
+      return {}
+    },
+    userThreadsCounts: state => id => countObjProp(state.users[id].threads),
+    userPostsCounts: state => id => countObjProp(state.users[id].posts),
+    repliesCount: state => id => countObjProp(state.threads[id].posts) - 1
   },
   actions: {
     createThread ({ commit, state, dispatch }, { text, title, forumId }) {
@@ -81,15 +94,45 @@ export default new Vuex.Store({
     },
     updateUser ({ commit }, user) {
       commit('setUser', { userId: user['.key'], user })
-    }
-  },
-  getters: {
-    authUser (state) {
-      return state.users[state.authId]
     },
-    userThreadsCounts: state => id => countObjProp(state.users[id].threads),
-    userPostsCounts: state => id => countObjProp(state.users[id].posts),
-    repliesCount: state => id => countObjProp(state.threads[id].posts) - 1
+    fetchThread ({ dispatch }, { id }) {
+      return dispatch('fetchItem', {resource: 'threads', id})
+    },
+    fetchUser ({dispatch}, {id}) {
+      return dispatch('fetchItem', {resource: 'users', id})
+    },
+    fetchPost ({dispatch}, {id}) {
+      return dispatch('fetchItem', {resource: 'posts', id})
+    },
+    fetchPosts ({dispatch}, {ids}) {
+      return dispatch('fetchItems', {ids, resource: 'posts'})
+    },
+    fetchForums ({dispatch}, {ids}) {
+      return dispatch('fetchItems', {ids, resource: 'forums'})
+    },
+    fetchAllCategories ({commit, state}) {
+      return new Promise((resolve, reject) => {
+        firebase.database().ref('categories').once('value', snapshot => {
+          const categoriesObject = snapshot.val()
+          Object.keys(categoriesObject).forEach(categoryId => {
+            const category = categoriesObject[categoryId]
+            commit('setItem', {resource: 'categories', id: categoryId, item: category})
+          })
+          resolve(Object.values(state.categories))
+        })
+      })
+    },
+    fetchItem ({commit, state}, {id, resource}) {
+      return new Promise((resolve, reject) => {
+        firebase.database().ref(resource).child(id).once('value', snapshot => {
+          commit('setItem', {resource, id: snapshot.key, item: snapshot.val()})
+          resolve(state[resource][id])
+        })
+      })
+    },
+    fetchItems ({dispatch}, {ids, resource}) {
+      return Promise.all(ids.map(id => dispatch('fetchItem', { id, resource })))
+    }
   },
   mutations: {
     setThread (state, { thread, threadId }) {
@@ -101,9 +144,13 @@ export default new Vuex.Store({
     setPost (state, { postId, post }) {
       Vue.set(state.posts, postId, post)
     },
+    setItem (state, { item, id, resource }) {
+      item['.key'] = id
+      Vue.set(state[resource], id, item)
+    },
     appendPostToThread: makeAppendToParentMutation({ parent: 'threads', child: 'posts' }),
     appendPostToUser: makeAppendToParentMutation({ parent: 'users', child: 'posts' }),
     appendThreadToForum: makeAppendToParentMutation({ parent: 'forums', child: 'threads' }),
-    appendThreadToUser: makeAppendToParentMutation({parent: 'users', child: 'threads'})
+    appendThreadToUser: makeAppendToParentMutation({ parent: 'users', child: 'threads' })
   }
 })
